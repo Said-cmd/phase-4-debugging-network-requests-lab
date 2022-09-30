@@ -62,12 +62,12 @@ developing your own process.
 
 - Add a new toy when the toy form is submitted
 
-  - How I debugged:
+  - How I debugged: There was a 500 status error pointing to an internal server error. By looking at the terminal error: "NameError (uninitialized constant ToysController::Toys):app/controllers/toys_controller.rb:10:in `create'" I gathered that there was an error within the toys controller specifically within the create method. The reason it was flagged as an uninitialized constant was because our Toy model is singular but was written in plural within the method. Simply removing the s to keep inline with rails conventions got rid of the error and allowed me to add a new toy using the front-end's form.
 
 - Update the number of likes for a toy
 
-  - How I debugged:
+  - How I debugged: For this bug there were two causes. From the front-end I kept seeing an Unexpected end of JSON input error and in the rails server there was an unpermitted input error flagged on the id. So the first thing I did was to add ID to the permitted params private method to get rid of the first server-side error. I then checked the update controller action and found that we weren't rendering the json. After making sure the render json: was present the number of likes was being updated both client and server side.
 
 - Donate a toy to Goodwill (and delete it from our database)
 
-  - How I debugged:
+  - How I debugged: The last bug was the most straightforward one to solve as after looking at the terminal where the rails server was running I found that there was no route matching "DELETE". To solve this I just added the ":destroy" route in the routes.rb file to make sure that it didn't throw an error. After that it enabled deletion of toys from the front and back-end with persistence.
